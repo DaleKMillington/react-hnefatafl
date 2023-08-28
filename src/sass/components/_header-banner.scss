@@ -1,0 +1,45 @@
+.header-banner {
+    display: flex;
+    border-bottom: 2px solid $color-light-primary;
+    justify-content: space-between;
+    align-items: center;
+
+    @include mobile () {
+        height: 6rem;
+        padding: 1rem 1.5rem;
+    }
+
+    @include tablet () {
+        height: 8rem;
+        padding: 1.25rem 2.0rem;
+    }
+
+    @include desktop () {
+        height: 10rem;
+        padding: 1.5rem 2.5rem;
+    }
+
+    &__text {
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        font-weight: 700;
+
+        @include mobile () {
+            font-size: 2.8rem;
+            transform: translateY(.2rem);
+        }
+
+        @include tablet () {
+            font-size: 4.5rem;
+            transform: translateY(.3rem);
+        }
+
+        @include desktop () {
+            font-size: 6rem;
+            transform: translateY(.4rem);
+        }
+
+        //letter-spacing: 2.5rem;
+    }
+}
