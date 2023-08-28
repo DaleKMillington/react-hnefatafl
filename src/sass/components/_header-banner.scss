@@ -1,4 +1,6 @@
 .header-banner {
+
+    position: relative;
     display: flex;
     border-bottom: 2px solid $color-light-primary;
     justify-content: space-between;
@@ -20,10 +22,28 @@
     }
 
     &__text {
-        display: flex;
-        align-items: center;
+        position: relative;
         text-transform: uppercase;
         font-weight: 700;
+        display: inline-block;
+        backface-visibility: hidden;
+        transition: all 0.8s ease-in-out;
+        -webkit-background-clip: text;
+        color: transparent;
+        background-image: linear-gradient(
+            to top,
+            $color-red-primary 0%,
+            $color-yellow-primary 50%,
+            $color-light-primary 50%,
+            $color-light-primary 100%
+        );
+        background-size: 100% 200%;
+        background-position: 0 0;
+        cursor: pointer;
+
+        &:hover {
+            background-position: 0 100%;
+        }
 
         @include mobile () {
             font-size: 2.8rem;
@@ -41,4 +61,5 @@
         }
 
     }
+
 }

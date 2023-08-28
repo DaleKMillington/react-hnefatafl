@@ -8,10 +8,11 @@ import './sass/index.scss';
 const App = () => {
     return (
         <>
-            <nav className="header-banner">
-                <div className="header-banner__text"><span>HNEFATAFL</span></div>
-                <p className="header-banner__text">MENU</p>
-            </nav>
+            <div className="header-banner">
+                <a href="#" className="header-banner__text">HNEFATAFL</a>
+                <a href="#" className="header-banner__text">MENU</a>
+            </div>
+
         </>
     )
 }
