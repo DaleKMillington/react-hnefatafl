@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import './App.scss'
+// Base Imports
 
-function App() {
-  const [count, setCount] = useState(0)
+// Third Party Imports
 
+// Application Imports
+import './sass/index.scss';
+
+const App = () => {
   return (
     <>
         <h1>Place Holder</h1>
@@ -11,4 +13,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

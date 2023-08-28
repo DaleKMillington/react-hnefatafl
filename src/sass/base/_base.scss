@@ -1,0 +1,26 @@
+// Remove all margins, paddings, and use inherit box sizing (from body defined below).
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    /* 
+        Root font-size: 
+        16px obtained from browser agent unless overridden in user settings
+        we want 10px so 10/16 = 0.625
+    */
+    // Hence this defines what 1rem is....
+    font-size: 62.5%;
+}
+
+// Box sizing set to border-box for easier calculations. Plus remove scroll bars as all self-contained in 1 viewport.
+body {
+    box-sizing: border-box;
+    background: $color-dark-primary;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}

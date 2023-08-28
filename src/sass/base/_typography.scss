@@ -1,0 +1,39 @@
+// General font settings throughout the application.
+body {
+    font-family: 'Skranji', cursive;
+    font-weight: 400;
+    color: $color-light-primary;
+
+    @include mobile(){
+        font-size: $font-size-extra-small;
+    }
+
+    @include tablet(){
+        font-size: $font-size-small;
+    }
+
+    @include desktop(){
+        font-size: $font-size-default;
+    }
+
+    @include large-desktop(){
+        font-size: $font-size-large;
+    }
+}
+
+// The primary heading font settings.
+//.heading-primary {
+//    color: $color-grey-light;
+//    text-transform: uppercase;
+//
+//    &--main {
+//        display: inline-block;
+//        font-size: 5rem;
+//        font-weight: 400;
+//        letter-spacing: 2.5rem;
+//        animation: moveInLeft 1s ease-out;
+//    }
+//}
+
+
+
