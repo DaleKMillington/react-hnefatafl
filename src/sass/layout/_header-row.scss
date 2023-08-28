@@ -1,0 +1,24 @@
+.header-row {
+
+    position: relative;
+    display: flex;
+    border-bottom: 2px solid $color-light-primary;
+    justify-content: space-between;
+    align-items: center;
+
+    @include mobile () {
+        height: $header-banner-height-mobile;
+        padding: 1rem 1.5rem;
+    }
+
+    @include tablet () {
+        height: $header-banner-height-tablet;
+        padding: 1.25rem 2.0rem;
+    }
+
+    @include desktop () {
+        height: $header-banner-height-desktop;
+        padding: 1.5rem 2.5rem;
+    }
+
+}
