@@ -1,0 +1,21 @@
+.footer-row {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include mobile () {
+        height: $footer-row-height-mobile;
+        padding: 1rem 0;
+    }
+
+    @include tablet () {
+        height: $footer-row-height-tablet;
+        padding: 1.25rem 0;
+    }
+
+    @include desktop () {
+        height: $footer-row-height-desktop;
+        padding: 1.5rem 0;
+    }
+}

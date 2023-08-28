@@ -1,0 +1,27 @@
+.action-row {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include mobile () {
+        height: $header-row-height-mobile * 0.5;
+        padding: 1rem 1.5rem;
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+
+    @include tablet () {
+        height: $header-row-height-tablet * 0.5;
+        padding: 1.25rem 2.0rem;
+        margin-left: 18rem;
+        margin-right: 18rem;
+    }
+
+    @include desktop () {
+        height: $header-row-height-desktop * 0.5;
+        padding: 1.5rem 2.5rem;
+        margin-left: 25rem;
+        margin-right: 25rem;
+    }
+}

@@ -1,0 +1,66 @@
+@keyframes moveBackgroundLeftIcon {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+@keyframes moveBackgroundRightIcon {
+    0% {
+        background-position: 0 100%;
+    }
+    50% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: 0 100%;
+    }
+}
+
+.main-icon {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 20%;
+
+    &__icon {
+        font-family: 'Noto Sans Runic', sans-serif;
+        font-size: 50rem;
+        -webkit-background-clip: text;
+        color: transparent;
+        background-size: 125% 125%;
+        background-image: radial-gradient(at bottom, $color-red-primary, $color-yellow-primary);
+
+        @include mobile () {
+            display: none;
+        }
+
+        @include tablet () {
+            display: none;
+        }
+
+        @include desktop () {
+            display: inline-block;
+        }
+
+        &--left {
+            background-position: 0 0;
+            animation: moveBackgroundLeftIcon 4s linear infinite;
+        }
+
+        &--right {
+            background-position: 0 100%;
+            animation: moveBackgroundRightIcon 4s linear infinite;
+        }
+
+    }
+}
+
+
