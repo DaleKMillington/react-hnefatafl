@@ -1,0 +1,75 @@
+@keyframes moveBackgroundRunes {
+    0% {
+        background-position: 0 0;
+    }
+    75% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 300%;
+    }
+}
+
+.board-container {
+    position: relative;
+    width: 90%;
+    overflow: hidden;
+
+    &:before{
+        content: "";
+        display: block;
+        padding-top: 100%;
+    }
+
+    &__runeholder {
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.1rem 10%;
+        height: 5%;
+        width: 100%;
+        font-weight: bold;
+        -webkit-background-clip: text;
+        color: transparent;
+        background-image: linear-gradient(
+            to top,
+            $color-light-primary 0%,
+            $color-light-primary 25%,
+            $color-yellow-primary 33%,
+            $color-orange-primary 50%,
+            $color-yellow-primary 66%,
+            $color-light-primary 75%,
+            $color-light-primary 100%
+        );
+        background-size: 100% 300%;
+        animation: moveBackgroundRunes 10s linear infinite;
+
+        &--top {
+            top: 0;
+            left: 0;
+        }
+
+        &--left {
+            bottom: 0;
+            left: 5%;
+            transform: rotate(-90deg);
+            transform-origin: bottom left;
+        }
+
+        &--bottom {
+            bottom: 0;
+            left: 0;
+            transform: rotate(180deg);
+        }
+
+        &--right {
+            bottom: 0;
+            right: 5%;
+            transform: rotate(90deg);
+            transform-origin: bottom right;
+        }
+
+    }
+
+}

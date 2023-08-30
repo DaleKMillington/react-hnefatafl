@@ -32,7 +32,6 @@
 
     &__icon {
         font-family: 'Noto Sans Runic', sans-serif;
-        font-size: 50rem;
         -webkit-background-clip: text;
         color: transparent;
         background-size: 125% 125%;
@@ -43,11 +42,13 @@
         }
 
         @include tablet () {
-            display: none;
+            display: inline-block;
+            font-size: 35rem;
         }
 
         @include desktop () {
             display: inline-block;
+            font-size: 50rem;
         }
 
         &--left {

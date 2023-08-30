@@ -14,15 +14,15 @@ $font-size-large: 1.2 * $font-size-default;
 // LAYOUT
 $header-row-height-mobile: 6rem;
 $action-row-height-mobile:  $header-row-height-mobile * .5;
-$footer-row-height-mobile: $header-row-height-mobile * 1.5;
+$footer-row-height-mobile: $header-row-height-mobile * 1.15;
 $main-row-height-mobile: calc(100% - $header-row-height-mobile - $action-row-height-mobile - $footer-row-height-mobile);
 
 $header-row-height-tablet: 8rem;
 $action-row-height-tablet: $header-row-height-tablet * .5;
-$footer-row-height-tablet: $header-row-height-tablet * 1.5;
+$footer-row-height-tablet: $header-row-height-tablet * 1.15;
 $main-row-height-tablet: calc(100% - $header-row-height-tablet - $action-row-height-tablet - $footer-row-height-tablet);
 
 $header-row-height-desktop: 10rem;
 $action-row-height-desktop:  $header-row-height-desktop * .5;
-$footer-row-height-desktop: $header-row-height-desktop * 1.5;
+$footer-row-height-desktop: $header-row-height-desktop * 1.15;
 $main-row-height-desktop: calc(100% - $header-row-height-desktop - $action-row-height-desktop - $footer-row-height-desktop);

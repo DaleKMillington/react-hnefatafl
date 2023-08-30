@@ -1,22 +1,24 @@
 .main-row {
     position: relative;
     display: flex;
-    justify-content: space-around;
     align-items: center;
 
     @include mobile () {
         height: $main-row-height-mobile;
         padding: 1rem 0;
+        justify-content: center;
     }
 
     @include tablet () {
         height: $main-row-height-tablet;
         padding: 1.25rem 0;
+        justify-content: space-around;
     }
 
     @include desktop () {
         height: $main-row-height-desktop;
         padding: 1.5rem 0;
+        justify-content: space-around;
     }
 
 }
