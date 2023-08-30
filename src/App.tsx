@@ -93,6 +93,7 @@ const App = () => {
                             <span>ᚾ</span>
                             <span>ᛟ</span>
                         </div>
+                        <div className="board"></div>
                     </div>
 
                     <div className="main-icon">

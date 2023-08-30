@@ -2,7 +2,7 @@
     0% {
         background-position: 0 0;
     }
-    75% {
+    66% {
         background-position: 0 0;
     }
     100% {
@@ -12,7 +12,7 @@
 
 .board-container {
     position: relative;
-    width: 90%;
+    width: 100%;
     overflow: hidden;
 
     &:before{
