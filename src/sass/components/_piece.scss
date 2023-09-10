@@ -25,4 +25,9 @@
         cursor: pointer;
     }
 
+    &--clone {
+        position: relative;
+        opacity: 0.6;
+    }
+
 }

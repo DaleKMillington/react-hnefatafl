@@ -6,8 +6,6 @@ import { useState } from "react";
 // Application Imports
 import {initialState} from '../game-logic/board-state.ts';
 import Square from './Square.tsx';
-import {Simulate} from "react-dom/test-utils";
-import toggle = Simulate.toggle;
 
 const Board = () => {
 
