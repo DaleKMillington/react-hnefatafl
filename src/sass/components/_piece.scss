@@ -1,0 +1,21 @@
+.piece {
+
+    @include absCenter();
+    border-radius: 50%;
+    height: 90%;
+    width: 90%;
+
+    &--white {
+        background: white;
+        border: 1px solid black;
+    }
+
+    &--black {
+        background: $color-dark-primary;
+    }
+
+    &--king {
+        background: orangered;
+    }
+
+}

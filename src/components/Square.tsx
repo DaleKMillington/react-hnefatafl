@@ -3,6 +3,7 @@
 // Third Party Imports
 
 // Application Imports
+import Piece from './Piece.tsx';
 
 // Types
 interface SquareProps {
@@ -22,7 +23,9 @@ const Square = ({rowIndex, columnIndex, piece, updateBoardState}: SquareProps) =
 
 
     return (
-        <div className={squareClasses}></div>
+        <div className={squareClasses}>
+            <Piece piece={piece} updateBoardState={updateBoardState} />
+        </div>
     )
 }
 
