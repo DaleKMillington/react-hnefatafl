@@ -4,7 +4,7 @@
 
 // Application Imports
 import './sass/index.scss';
-import Board from './components/Board.tsx';
+import BoardContainer from './components/BoardContainer.tsx';
 
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
                         <div className="main-icon__icon main-icon__icon--left">ᛟ</div>
                     </div>
 
-                    <Board />
+                    <BoardContainer />
 
                     <div className="main-icon">
                         <div className="main-icon__icon main-icon__icon--right">ᚾ</div>

@@ -4,6 +4,7 @@
     border-radius: 50%;
     height: 90%;
     width: 90%;
+    z-index: 2;
 
     &--white {
         background: white;
@@ -12,10 +13,16 @@
 
     &--black {
         background: $color-dark-primary;
+        border: 1px solid black;
     }
 
     &--king {
         background: orangered;
+        border: 1px solid black;
+    }
+
+    &--selectable {
+        cursor: pointer;
     }
 
 }

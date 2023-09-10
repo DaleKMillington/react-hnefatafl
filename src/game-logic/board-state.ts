@@ -3,7 +3,7 @@
 // B - Black
 // K - King
 
-const initialState: string[][] = [
+export const initialState: string[][] = [
     ['E', 'E', 'E', 'B', 'B', 'B', 'B', 'B', 'E', 'E', 'E'],
     ['E', 'E', 'E', 'E', 'E', 'B', 'E', 'E', 'E', 'E', 'E'],
     ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
@@ -17,4 +17,19 @@ const initialState: string[][] = [
     ['E', 'E', 'E', 'B', 'B', 'B', 'B', 'B', 'E', 'E', 'E']
 ];
 
-export default initialState;
+// N - Normal
+// R - Restricted
+
+export const restrictedSquares: string[][] = [
+    ['R', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'R'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'R', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ['R', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'R']
+]

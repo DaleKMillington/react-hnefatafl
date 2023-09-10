@@ -3,7 +3,6 @@
     display: inline-block;
     width: calc(100% / 11);
     height: 100%;
-    //z-index: 5;
     border: 1px solid lighten($color-dark-primary, 25);
 
     &--top {
@@ -20,5 +19,9 @@
 
     &--right {
         border-right: none;
+    }
+
+    &--restricted {
+        background-color: rgba(orangered, 0.4);
     }
 }

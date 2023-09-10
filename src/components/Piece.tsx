@@ -7,12 +7,12 @@
 // Types
 interface PieceProps {
     piece: string;
+    pieceSelected: boolean;
     updateBoardState: (state: string[][]) => void;
+    togglePieceSelected: (state: boolean) => void;
 }
 
-const Piece = ({piece, updateBoardState}: PieceProps) => {
-
-    console.log('piece', piece);
+const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: PieceProps) => {
 
     let pieceClasses = '';
     switch(piece){
@@ -20,6 +20,8 @@ const Piece = ({piece, updateBoardState}: PieceProps) => {
         case 'B': pieceClasses = 'piece piece--black'; break;
         case 'K': pieceClasses = 'piece piece--king';
     }
+
+    pieceClasses = pieceSelected ? pieceClasses : pieceClasses += ' piece--selectable';
 
     return (
         <div className={pieceClasses}></div>
