@@ -10,10 +10,10 @@
 
     &__background-image {
         @include absCenter();
-        height: 65%;
-        width: 65%;
+        height: 100%;
+        width: 100%;
         background-image: url('../assets/board-image.svg');
         background-size: cover;
-        opacity: 0.1;
+        opacity: 0.15;
     }
 }

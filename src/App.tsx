@@ -1,40 +1,13 @@
 // Base Imports
-import { useState, useEffect } from "react";
 
 // Third Party Imports
 
 // Application Imports
 import './sass/index.scss';
+import Board from './components/Board.tsx';
+
 
 const App = () => {
-
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-
-    useEffect(() => {
-        const boardContainer = document.getElementById('board-container');
-        const mainRow = document.querySelector('.main-row');
-        if (boardContainer && mainRow) {
-            const mainRowHeight = (mainRow as HTMLElement).offsetHeight;
-            boardContainer.style.maxWidth = `${mainRowHeight}px`;
-        }
-    }, [windowWidth]);
-
-
-
-
 
     return (
         <>
@@ -56,47 +29,8 @@ const App = () => {
                     <div className="main-icon">
                         <div className="main-icon__icon main-icon__icon--left">ᛟ</div>
                     </div>
-                    <div className="board-container" id="board-container">
-                        <div className="board-container__runeholder board-container__runeholder--top">
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                        </div>
-                        <div className="board-container__runeholder board-container__runeholder--left">
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                        </div>
-                        <div className="board-container__runeholder board-container__runeholder--bottom">
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                        </div>
-                        <div className="board-container__runeholder board-container__runeholder--right">
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                            <span>ᚾ</span>
-                            <span>ᛟ</span>
-                        </div>
-                        <div className="board">
-                            <div className="board__background-image"></div>
-                        </div>
-                    </div>
+
+                    <Board />
 
                     <div className="main-icon">
                         <div className="main-icon__icon main-icon__icon--right">ᚾ</div>
