@@ -5,5 +5,15 @@
     width: 90%;
     height: 90%;
     border-radius: 0.5rem;
-    background-color: $color-light-primary;
+    background-image: url('../assets/board-background.svg');
+    background-size: cover;
+
+    &__background-image {
+        @include absCenter();
+        height: 65%;
+        width: 65%;
+        background-image: url('../assets/board-image.svg');
+        background-size: cover;
+        opacity: 0.1;
+    }
 }
