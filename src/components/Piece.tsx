@@ -1,10 +1,10 @@
 // Base Imports
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Third Party Imports
 
 // Application Imports
-import ClonePiece from "./ClonePiece.tsx";
+import ClonedPiece from "./ClonedPiece.tsx";
 
 // Types
 interface PieceProps {
@@ -34,10 +34,35 @@ const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: Pi
         setThisPieceSelected(true);
     }
 
-    return (
-        <div className={pieceClasses} onClick={selectPiece}>
+    const [pieceWidth, setPieceWidth] = useState(0);
+    const [pieceHeight, setPieceHeight] = useState(0);
 
-            {thisPieceSelected && <ClonePiece piece={piece} />}
+    const pieceRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const updatePieceSize = () => {
+            if (pieceRef.current) {
+                const { width, height } = pieceRef.current.getBoundingClientRect();
+                setPieceWidth(width);
+                setPieceHeight(height);
+            }
+        };
+
+        // Initial size calculation
+        updatePieceSize();
+
+        // Listen for window resize events to update size
+        window.addEventListener('resize', updatePieceSize);
+
+        // Clean up event listener
+        return () => window.removeEventListener('resize', updatePieceSize);
+    }, []);
+
+
+    return (
+        <div className={pieceClasses} onClick={selectPiece} ref={pieceRef}>
+
+            {thisPieceSelected && <ClonedPiece piece={piece} width={pieceWidth} height={pieceHeight} />}
 
         </div>
     )

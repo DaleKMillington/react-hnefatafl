@@ -1,9 +1,10 @@
-.piece {
+.cloned-piece {
 
     @include absCenter();
     border-radius: 50%;
-    height: 90%;
-    width: 90%;
+    height: 20px;
+    width: 20px;
+    opacity: 0.6;
     z-index: 2;
 
     &--white {
@@ -19,14 +20,6 @@
     &--king {
         background: orangered;
         border: 1px solid black;
-    }
-
-    &--selectable {
-        cursor: pointer;
-    }
-
-    &--clone {
-        opacity: 0.6;
     }
 
 }
