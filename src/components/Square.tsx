@@ -13,7 +13,7 @@ interface SquareProps {
     piece: string;
     pieceSelected: boolean;
     updateBoardState: (state: string[][]) => void;
-    togglePieceSelected: (state: boolean) => void;
+    setPieceSelected: (state: boolean) => void;
 }
 
 const Square = ({
@@ -22,7 +22,7 @@ const Square = ({
     piece,
     pieceSelected,
     updateBoardState,
-    togglePieceSelected
+    setPieceSelected
 }: SquareProps) => {
 
     let squareClasses = 'board-square';
@@ -41,7 +41,7 @@ const Square = ({
                 piece={piece}
                 pieceSelected={pieceSelected}
                 updateBoardState={updateBoardState}
-                togglePieceSelected={togglePieceSelected}
+                setPieceSelected={setPieceSelected}
             />
         </div>
     )

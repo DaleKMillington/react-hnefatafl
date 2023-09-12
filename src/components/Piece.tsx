@@ -11,13 +11,13 @@ interface PieceProps {
     piece: string;
     pieceSelected: boolean;
     updateBoardState: (state: string[][]) => void;
-    togglePieceSelected: (state: boolean) => void;
+    setPieceSelected: (state: boolean) => void;
 }
 
 
-const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: PieceProps) => {
+const Piece = ({piece, pieceSelected, updateBoardState, setPieceSelected}: PieceProps) => {
 
-    //// Setup classes for piece prop ----------------------------------------------------------------------------------
+    //// Setup classes for piece ---------------------------------------------------------------------------------------
     let pieceClasses = '';
     switch(piece){
         case 'W': pieceClasses = 'piece piece--white'; break;
@@ -77,7 +77,7 @@ const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: Pi
     // Onclick handler for when a piece is selected
     const selectPiece: MouseEventHandler<HTMLDivElement> = (event) => {
         const { clientX, clientY } = event;
-        togglePieceSelected(pieceSelected);
+        setPieceSelected(true);
         setThisPieceSelected(true);
         setMousePosition({ x: clientX, y: clientY });
     };
@@ -94,6 +94,8 @@ const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: Pi
                     height={pieceHeight}
                     left={mousePosition.x}
                     top={mousePosition.y}
+                    setPieceSelected={setPieceSelected}
+                    setThisPieceSelected={setThisPieceSelected}
                 />
             }
 

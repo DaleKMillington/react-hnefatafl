@@ -13,7 +13,6 @@ const Board = () => {
     const updateBoardState = (state: string[][]) => setBoardState(state);
 
     const [pieceSelected, setPieceSelected] = useState(false);
-    const togglePieceSelected = () => setPieceSelected(!pieceSelected);
 
     return (
 
@@ -33,7 +32,7 @@ const Board = () => {
                                     piece={piece}
                                     pieceSelected={pieceSelected}
                                     updateBoardState={updateBoardState}
-                                    togglePieceSelected={togglePieceSelected}
+                                    setPieceSelected={setPieceSelected}
                                 />
                             ))
                         }
