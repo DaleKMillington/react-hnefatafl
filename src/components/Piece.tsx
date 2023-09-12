@@ -1,5 +1,5 @@
 // Base Imports
-import { useState, useEffect, useRef } from "react";
+import {useState, useEffect, useRef, MouseEventHandler} from "react";
 
 // Third Party Imports
 
@@ -14,9 +14,10 @@ interface PieceProps {
     togglePieceSelected: (state: boolean) => void;
 }
 
+
 const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: PieceProps) => {
 
-    // Setup classes for piece prop
+    //// Setup classes for piece prop ----------------------------------------------------------------------------------
     let pieceClasses = '';
     switch(piece){
         case 'W': pieceClasses = 'piece piece--white'; break;
@@ -24,21 +25,38 @@ const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: Pi
         case 'K': pieceClasses = 'piece piece--king';
     }
     pieceClasses = pieceSelected ? pieceClasses : pieceClasses += ' piece--selectable';
+    //// ---------------------------------------------------------------------------------------------------------------
 
-    const [thisPieceSelected, setThisPieceSelected] = useState(false);
+    //// useState Hooks ------------------------------------------------------------------------------------------------
 
-    // Onclick handler for pieces
-    const selectPiece = () => {
-        console.log('Piece selected: ', piece);
-        togglePieceSelected(pieceSelected);
-        setThisPieceSelected(true);
-    }
+    // Has a piece been selected.
+    const [
+        thisPieceSelected,
+        setThisPieceSelected
+    ] = useState(false);
 
+    // Mouse position so we can grab the coords when a piece is selected to render clone at this point.
+    const [
+        mousePosition,
+        setMousePosition
+    ] = useState({ x: 0, y: 0 });
+
+    // Width and height of the piece that was selected so we can make clone the same size.
     const [pieceWidth, setPieceWidth] = useState(0);
     const [pieceHeight, setPieceHeight] = useState(0);
 
+    //// ---------------------------------------------------------------------------------------------------------------
+
+    //// useRef Hooks --------------------------------------------------------------------------------------------------
+
+    // Reference to the piece so that we can obtain it's runtime rendered size.
     const pieceRef = useRef<HTMLDivElement | null>(null);
 
+    //// ---------------------------------------------------------------------------------------------------------------
+
+    //// useEffect Hooks -----------------------------------------------------------------------------------------------
+
+    // On component reload, calculate the size of the previous renders selected piece.
     useEffect(() => {
         const updatePieceSize = () => {
             if (pieceRef.current) {
@@ -47,22 +65,37 @@ const Piece = ({piece, pieceSelected, updateBoardState, togglePieceSelected}: Pi
                 setPieceHeight(height);
             }
         };
-
-        // Initial size calculation
         updatePieceSize();
-
-        // Listen for window resize events to update size
         window.addEventListener('resize', updatePieceSize);
-
-        // Clean up event listener
         return () => window.removeEventListener('resize', updatePieceSize);
     }, []);
 
+    //// ---------------------------------------------------------------------------------------------------------------
+
+    //// Callbacks -----------------------------------------------------------------------------------------------------
+
+    // Onclick handler for when a piece is selected
+    const selectPiece: MouseEventHandler<HTMLDivElement> = (event) => {
+        const { clientX, clientY } = event;
+        togglePieceSelected(pieceSelected);
+        setThisPieceSelected(true);
+        setMousePosition({ x: clientX, y: clientY });
+    };
+
+    //// ---------------------------------------------------------------------------------------------------------------
 
     return (
         <div className={pieceClasses} onClick={selectPiece} ref={pieceRef}>
 
-            {thisPieceSelected && <ClonedPiece piece={piece} width={pieceWidth} height={pieceHeight} />}
+            {thisPieceSelected &&
+                <ClonedPiece
+                    piece={piece}
+                    width={pieceWidth}
+                    height={pieceHeight}
+                    left={mousePosition.x}
+                    top={mousePosition.y}
+                />
+            }
 
         </div>
     )

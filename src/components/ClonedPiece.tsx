@@ -1,5 +1,5 @@
 // Base Imports
-import {useEffect, useState, useRef} from "react";
+import {useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 
 // Third Party Imports
@@ -11,10 +11,12 @@ interface ClonePieceProps {
     piece: string;
     width: number;
     height: number;
+    left: number;
+    top: number;
 }
 
-const ClonedPiece = ({ piece, width, height }: ClonePieceProps) => {
-  const [mousePosition, setMousePosition] = useState({ top: -500, left: -500 });
+const ClonedPiece = ({ piece, width, height, left, top }: ClonePieceProps) => {
+  const [mousePosition, setMousePosition] = useState({ top: top, left: left });
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
