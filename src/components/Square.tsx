@@ -12,6 +12,12 @@ interface SquareProps {
     columnIndex: number;
     piece: string;
     pieceSelected: boolean;
+    boardDimensions: {
+        top: number,
+        left: number,
+        width: number,
+        height: number
+    };
     updateBoardState: (state: string[][]) => void;
     setPieceSelected: (state: boolean) => void;
 }
@@ -21,6 +27,7 @@ const Square = ({
     columnIndex,
     piece,
     pieceSelected,
+    boardDimensions,
     updateBoardState,
     setPieceSelected
 }: SquareProps) => {
@@ -40,6 +47,7 @@ const Square = ({
             <Piece
                 piece={piece}
                 pieceSelected={pieceSelected}
+                boardDimensions={boardDimensions}
                 updateBoardState={updateBoardState}
                 setPieceSelected={setPieceSelected}
             />

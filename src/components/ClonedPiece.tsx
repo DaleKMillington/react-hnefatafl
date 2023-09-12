@@ -13,11 +13,38 @@ interface ClonePieceProps {
     height: number;
     left: number;
     top: number;
+    boardDimensions: {
+        top: number,
+        left: number,
+        width: number,
+        height: number
+    };
     setPieceSelected: (state: boolean) => void;
     setThisPieceSelected: (state: boolean) => void;
 }
 
-const ClonedPiece = ({ piece, width, height, left, top, setPieceSelected, setThisPieceSelected }: ClonePieceProps) => {
+const ClonedPiece = ({
+    piece,
+    width,
+    height,
+    left,
+    top,
+    boardDimensions,
+    setPieceSelected,
+    setThisPieceSelected
+}: ClonePieceProps) => {
+
+    //// Test board dimensions for now
+    const {
+        top: boardTop,
+        left: boardLeft,
+        width: boardWidth,
+        height: boardHeight
+    } = boardDimensions;
+    console.log('boardTop: ', boardTop);
+    console.log('boardLeft: ', boardLeft);
+    console.log('boardWidth: ', boardWidth);
+    console.log('boardHeight: ', boardHeight);
 
     //// Setup classes for cloned piece --------------------------------------------------------------------------------
     let pieceClasses = '';

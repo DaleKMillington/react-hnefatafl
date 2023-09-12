@@ -10,12 +10,18 @@ import ClonedPiece from "./ClonedPiece.tsx";
 interface PieceProps {
     piece: string;
     pieceSelected: boolean;
+    boardDimensions: {
+        top: number,
+        left: number,
+        width: number,
+        height: number
+    };
     updateBoardState: (state: string[][]) => void;
     setPieceSelected: (state: boolean) => void;
 }
 
 
-const Piece = ({piece, pieceSelected, updateBoardState, setPieceSelected}: PieceProps) => {
+const Piece = ({piece, pieceSelected, boardDimensions, updateBoardState, setPieceSelected}: PieceProps) => {
 
     //// Setup classes for piece ---------------------------------------------------------------------------------------
     let pieceClasses = '';
@@ -94,6 +100,7 @@ const Piece = ({piece, pieceSelected, updateBoardState, setPieceSelected}: Piece
                     height={pieceHeight}
                     left={mousePosition.x}
                     top={mousePosition.y}
+                    boardDimensions={boardDimensions}
                     setPieceSelected={setPieceSelected}
                     setThisPieceSelected={setThisPieceSelected}
                 />

@@ -1,5 +1,5 @@
 // Base Imports
-import { useState } from "react";
+import {useRef, useState, useEffect} from "react";
 
 // Third Party Imports
 
@@ -14,9 +14,48 @@ const Board = () => {
 
     const [pieceSelected, setPieceSelected] = useState(false);
 
+    //// useState Hooks ------------------------------------------------------------------------------------------------
+
+    // Board dimensions
+    const [
+        boardDimensions,
+        setBoardDimensions
+    ] = useState({
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0
+    });
+
+    //// ---------------------------------------------------------------------------------------------------------------
+
+    //// useRef Hooks --------------------------------------------------------------------------------------------------
+
+    const boardRef = useRef<HTMLDivElement | null>(null);
+
+    //// ---------------------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        const updateBoardDimensions = () => {
+            if (boardRef.current) {
+                const {
+                    top,
+                    left,
+                    width,
+                    height
+                } = boardRef.current.getBoundingClientRect();
+                setBoardDimensions({ top, left, width, height });
+            }
+        };
+        updateBoardDimensions();
+        window.addEventListener('resize', updateBoardDimensions);
+        return () => window.removeEventListener('resize', updateBoardDimensions);
+    }, []);
+
+    //// ---------------------------------------------------------------------------------------------------------------
+
     return (
 
-        <div className="board">
+        <div className="board" ref={boardRef}>
             <div className="board__background-image"></div>
 
                 {
@@ -31,6 +70,7 @@ const Board = () => {
                                     columnIndex={columnIndex}
                                     piece={piece}
                                     pieceSelected={pieceSelected}
+                                    boardDimensions={boardDimensions}
                                     updateBoardState={updateBoardState}
                                     setPieceSelected={setPieceSelected}
                                 />
@@ -44,21 +84,5 @@ const Board = () => {
         </div>
     )
 }
-
-/*
-{boardState.map((row, rowIndex) => (
-    <key={rowIndex}>
-        {row.map((piece, columnIndex) => (
-            <Square
-                key={columnIndex}
-                rowIndex={rowIndex}
-                columnIndex={columnIndex}
-                piece={piece}
-                setBoardState={setBoardState}
-            />
-        ))}
-    </>
-))}
- */
 
 export default Board;
