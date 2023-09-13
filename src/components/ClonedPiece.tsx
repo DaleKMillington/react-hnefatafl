@@ -57,6 +57,19 @@ const ClonedPiece = ({
     }
     //// ---------------------------------------------------------------------------------------------------------------
 
+    //// Callbacks -----------------------------------------------------------------------------------------------------
+
+    // Onclick handler for when a piece is selected
+    const handleClicks: MouseEventHandler<HTMLDivElement> = (event) => {
+        if (event.button === 2) {
+            event.preventDefault();
+            setPieceSelected(false);
+            setThisPieceSelected(false);
+        }
+    };
+
+    //// ---------------------------------------------------------------------------------------------------------------
+
     //// useState Hooks ------------------------------------------------------------------------------------------------
 
     // State to track mouse movement and re-render the component so the clone follows the mouse.
@@ -74,24 +87,21 @@ const ClonedPiece = ({
         const handleMouseMove = (event: MouseEvent) => {
             const mouseX = event.clientX;
             const mouseY = event.clientY;
-            setMousePosition({ top: mouseY, left: mouseX });
+            if(
+                (mouseX + width / 2) < boardLeft ||
+                (mouseX - width / 2) > boardLeft + boardWidth ||
+                (mouseY + height / 2) < boardTop ||
+                (mouseY - height / 2) > boardTop + boardHeight
+            ){
+                setThisPieceSelected(false);
+                setPieceSelected(false);
+            } else {
+                setMousePosition({ top: mouseY, left: mouseX });
+            }
         };
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
-    //// ---------------------------------------------------------------------------------------------------------------
-
-    //// Callbacks -----------------------------------------------------------------------------------------------------
-
-    // Onclick handler for when a piece is selected
-    const handleClicks: MouseEventHandler<HTMLDivElement> = (event) => {
-        if (event.button === 2) {
-            event.preventDefault();
-            setPieceSelected(false);
-            setThisPieceSelected(false);
-        }
-    };
+    }, [boardLeft, boardWidth, boardTop, boardHeight, width, height, setThisPieceSelected, setPieceSelected]);
 
     //// ---------------------------------------------------------------------------------------------------------------
 
