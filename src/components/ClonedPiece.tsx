@@ -41,10 +41,6 @@ const ClonedPiece = ({
         width: boardWidth,
         height: boardHeight
     } = boardDimensions;
-    console.log('boardTop: ', boardTop);
-    console.log('boardLeft: ', boardLeft);
-    console.log('boardWidth: ', boardWidth);
-    console.log('boardHeight: ', boardHeight);
 
     //// Setup classes for cloned piece --------------------------------------------------------------------------------
     let pieceClasses = '';
@@ -82,7 +78,7 @@ const ClonedPiece = ({
 
     //// useEffect Hooks -----------------------------------------------------------------------------------------------
 
-    // On each re-render, calculate the new mouse position.
+    // On each re-render, calculate the new mouse position. If the mouse has left the board then de-select piece.
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             const mouseX = event.clientX;

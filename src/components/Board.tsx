@@ -1,8 +1,7 @@
 // Base Imports
-import {useRef, useState, useEffect} from "react";
+import {useEffect, useRef, useState} from "react";
 
 // Third Party Imports
-
 // Application Imports
 import {initialState} from '../game-logic/board-state.ts';
 import Square from './Square.tsx';
