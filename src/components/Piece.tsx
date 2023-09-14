@@ -10,6 +10,8 @@ import ClonedPiece from "./ClonedPiece.tsx";
 interface PieceProps {
     piece: string;
     pieceSelected: boolean;
+    rowIndex: number;
+    columnIndex: number;
     boardDimensions: {
         top: number,
         left: number,
@@ -21,7 +23,15 @@ interface PieceProps {
 }
 
 
-const Piece = ({piece, pieceSelected, boardDimensions, updateBoardState, setPieceSelected}: PieceProps) => {
+const Piece = ({
+    piece,
+    pieceSelected,
+    rowIndex,
+    columnIndex,
+    boardDimensions,
+    updateBoardState,
+    setPieceSelected
+}: PieceProps) => {
 
     //// Setup classes for piece ---------------------------------------------------------------------------------------
 
@@ -49,7 +59,7 @@ const Piece = ({piece, pieceSelected, boardDimensions, updateBoardState, setPiec
         setMousePosition
     ] = useState({ x: 0, y: 0 });
 
-    // Width and height of the piece that was selected so we can make clone the same size.
+    // Width and height of the piece that was selected so that we can make clone the same size.
     const [pieceWidth, setPieceWidth] = useState(0);
     const [pieceHeight, setPieceHeight] = useState(0);
 
@@ -98,6 +108,8 @@ const Piece = ({piece, pieceSelected, boardDimensions, updateBoardState, setPiec
             {thisPieceSelected &&
                 <ClonedPiece
                     piece={piece}
+                    rowIndex={rowIndex}
+                    columnIndex={columnIndex}
                     width={pieceWidth}
                     height={pieceHeight}
                     left={mousePosition.x}

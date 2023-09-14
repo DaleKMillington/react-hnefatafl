@@ -24,4 +24,8 @@
     &--restricted {
         background-color: rgba(orangered, 0.4);
     }
+
+    &--selectable {
+        border-color: aqua;
+    }
 }

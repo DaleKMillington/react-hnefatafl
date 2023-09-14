@@ -46,10 +46,12 @@ const Square = ({
     //// ---------------------------------------------------------------------------------------------------------------
 
     return (
-        <div className={squareClasses}>
+        <div className={squareClasses} data-row={rowIndex} data-column={columnIndex}>
             <Piece
                 piece={piece}
                 pieceSelected={pieceSelected}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}
                 boardDimensions={boardDimensions}
                 updateBoardState={updateBoardState}
                 setPieceSelected={setPieceSelected}
