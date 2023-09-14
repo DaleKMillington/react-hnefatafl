@@ -94,8 +94,8 @@ const ClonedPiece = ({
 
     // State to track mouse movement and re-render the component so the clone follows the mouse.
     const [
-        mousePosition,
-        setMousePosition
+        clonePosition,
+        setClonePosition
     ] = useState({ top: top, left: left });
 
     const [activeSquare, setActiveSquare] = useState<Element>();
@@ -118,12 +118,31 @@ const ClonedPiece = ({
                 setThisPieceSelected(false);
                 setPieceSelected(false);
             } else {
-                setMousePosition({ top: mouseY, left: mouseX });
+                for (let i = 0; i < squares.length; i++) {
+                    const square = squares[i];
+                    const { left, top, width, height } = square.getBoundingClientRect();
+                    if (mouseX > left && mouseX < left + width && mouseY > top && mouseY < top + height) {
+                        setClonePosition({ top: top + height / 2, left: left + width / 2 });
+                        break;
+                    } else {
+                        setClonePosition({ top: mouseY, left: mouseX });
+                    }
+                }
             }
         };
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [boardLeft, boardWidth, boardTop, boardHeight, width, height, setThisPieceSelected, setPieceSelected]);
+    }, [
+        boardLeft,
+        boardWidth,
+        boardTop,
+        boardHeight,
+        width,
+        height,
+        setThisPieceSelected,
+        setPieceSelected,
+        squares
+    ]);
 
     // Determines if mouse is hovering over a square.
     useEffect(() => {
@@ -153,8 +172,8 @@ const ClonedPiece = ({
             onClick={handleLeftClick}
             onContextMenu={handleOtherClicks}
             style={{
-                top: `${mousePosition.top}px`,
-                left: `${mousePosition.left}px`,
+                top: `${clonePosition.top}px`,
+                left: `${clonePosition.left}px`,
                 width: `${width}px`,
                 height: `${height}px`
             }}
