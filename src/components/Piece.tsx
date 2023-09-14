@@ -24,6 +24,7 @@ interface PieceProps {
 const Piece = ({piece, pieceSelected, boardDimensions, updateBoardState, setPieceSelected}: PieceProps) => {
 
     //// Setup classes for piece ---------------------------------------------------------------------------------------
+
     let pieceClasses = '';
     switch(piece){
         case 'W': pieceClasses = 'piece piece--white'; break;
@@ -31,6 +32,7 @@ const Piece = ({piece, pieceSelected, boardDimensions, updateBoardState, setPiec
         case 'K': pieceClasses = 'piece piece--king';
     }
     pieceClasses = pieceSelected ? pieceClasses : pieceClasses += ' piece--selectable';
+
     //// ---------------------------------------------------------------------------------------------------------------
 
     //// useState Hooks ------------------------------------------------------------------------------------------------

@@ -32,6 +32,8 @@ const Square = ({
     setPieceSelected
 }: SquareProps) => {
 
+    //// Setup classes for square ---------------------------------------------------------------------------------------
+
     let squareClasses = 'board-square';
     squareClasses = rowIndex === 0 ? squareClasses += ' board-square--top' : squareClasses;
     squareClasses = rowIndex === 10 ? squareClasses += ' board-square--bottom' : squareClasses;
@@ -41,6 +43,7 @@ const Square = ({
     squareClasses = restrictedSquares[rowIndex][columnIndex] === 'R' ? squareClasses += ' board-square--restricted' :
         squareClasses;
 
+    //// ---------------------------------------------------------------------------------------------------------------
 
     return (
         <div className={squareClasses}>

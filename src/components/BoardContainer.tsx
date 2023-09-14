@@ -8,21 +8,23 @@ import Board from './Board.tsx';
 
 const BoardContainer = () => {
 
+    //// useState Hooks ------------------------------------------------------------------------------------------------
+
+    // Window width for resize events.
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+    //// ---------------------------------------------------------------------------------------------------------------
+
+    //// useEffect Hooks -----------------------------------------------------------------------------------------------
+
+    // Handle window resize events.
     useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
+        const handleResize = () => setWindowWidth(window.innerWidth);
         window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-
+    // Set the board max width to be equal to it's max height on window resize events.
     useEffect(() => {
         const boardContainer = document.getElementById('board-container');
         const mainRow = document.querySelector('.main-row');
@@ -31,6 +33,8 @@ const BoardContainer = () => {
             boardContainer.style.maxWidth = `${mainRowHeight}px`;
         }
     }, [windowWidth]);
+
+    //// ---------------------------------------------------------------------------------------------------------------
 
     return (
         <div className="board-container" id="board-container">

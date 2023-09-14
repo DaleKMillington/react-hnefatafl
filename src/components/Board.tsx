@@ -2,18 +2,21 @@
 import {useEffect, useRef, useState} from "react";
 
 // Third Party Imports
+
 // Application Imports
 import {initialState} from '../game-logic/board-state.ts';
 import Square from './Square.tsx';
 
 const Board = () => {
 
+    //// useState Hooks ------------------------------------------------------------------------------------------------
+
+    // Board piece position
     const [boardState, setBoardState] = useState(initialState);
     const updateBoardState = (state: string[][]) => setBoardState(state);
 
+    // Has a piece been selected
     const [pieceSelected, setPieceSelected] = useState(false);
-
-    //// useState Hooks ------------------------------------------------------------------------------------------------
 
     // Board dimensions
     const [

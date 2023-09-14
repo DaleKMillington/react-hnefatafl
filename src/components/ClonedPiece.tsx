@@ -34,7 +34,8 @@ const ClonedPiece = ({
     setThisPieceSelected
 }: ClonePieceProps) => {
 
-    //// Test board dimensions for now
+    //// Declarations --------------------------------------------------------------------------------------------------
+
     const {
         top: boardTop,
         left: boardLeft,
@@ -42,7 +43,10 @@ const ClonedPiece = ({
         height: boardHeight
     } = boardDimensions;
 
+    //// ---------------------------------------------------------------------------------------------------------------
+
     //// Setup classes for cloned piece --------------------------------------------------------------------------------
+
     let pieceClasses = '';
     switch (piece) {
         case 'W': pieceClasses = 'cloned-piece cloned-piece--white';
@@ -51,6 +55,7 @@ const ClonedPiece = ({
         break;
         case 'K': pieceClasses = 'cloned-piece cloned-piece--king';
     }
+
     //// ---------------------------------------------------------------------------------------------------------------
 
     //// Callbacks -----------------------------------------------------------------------------------------------------
