@@ -7,6 +7,9 @@ import ReactDOM from 'react-dom';
 // Application Imports
 
 // Types
+import {PieceSelected} from "../types/PieceSelected.ts";
+
+// Interfaces
 interface ClonePieceProps {
     piece: string;
     rowIndex: number;
@@ -21,7 +24,7 @@ interface ClonePieceProps {
         width: number,
         height: number
     };
-    setPieceSelected: (state: boolean) => void;
+    setPieceSelected: (piece: PieceSelected) => void;
     setThisPieceSelected: (state: boolean) => void;
 }
 
@@ -82,7 +85,11 @@ const ClonedPiece = ({
     const handleOtherClicks: MouseEventHandler<HTMLDivElement> = (event) => {
         if (event.button === 2) {
             event.preventDefault();
-            setPieceSelected(false);
+            setPieceSelected({
+                'piece': '',
+                'rowIndex': -1,
+                'columnIndex': -1
+            });
             setThisPieceSelected(false);
             squares.forEach(square => square.classList.remove('board-square--selectable'));
         }
@@ -116,12 +123,22 @@ const ClonedPiece = ({
                 (mouseY - height / 2) > boardTop + boardHeight
             ){
                 setThisPieceSelected(false);
-                setPieceSelected(false);
+                setPieceSelected({
+                    'piece': '',
+                    'rowIndex': -1,
+                    'columnIndex': -1
+                });
             } else {
                 for (let i = 0; i < squares.length; i++) {
                     const square = squares[i];
                     const { left, top, width, height } = square.getBoundingClientRect();
-                    if (mouseX > left && mouseX < left + width && mouseY > top && mouseY < top + height) {
+                    if (
+                        mouseX > left &&
+                        mouseX < left + width &&
+                        mouseY > top &&
+                        mouseY < top + height &&
+                        square.getAttribute('data-legal-move') === 'Y'
+                    ) {
                         setClonePosition({ top: top + height / 2, left: left + width / 2 });
                         break;
                     } else {
@@ -151,7 +168,13 @@ const ClonedPiece = ({
             const mouseY = event.clientY;
             squares.forEach(square => {
                 const {left, top, width, height} = square.getBoundingClientRect();
-                if (mouseX > left && mouseX < (left + width) && mouseY > top && mouseY < (top + height)){
+                if (
+                    mouseX > left &&
+                    mouseX < (left + width) &&
+                    mouseY > top &&
+                    mouseY < (top + height) &&
+                    square.getAttribute('data-legal-move') === 'Y'
+                ){
                     square.classList.add('board-square--selectable');
                     setActiveSquare(square);
                 } else {

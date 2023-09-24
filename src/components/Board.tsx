@@ -5,7 +5,11 @@ import {useEffect, useRef, useState} from "react";
 
 // Application Imports
 import {initialState} from '../game-logic/board-state.ts';
+import {restrictedSquares} from "../game-logic/board-state.ts";
 import Square from './Square.tsx';
+
+// Types
+import {PieceSelected} from "../types/PieceSelected.ts";
 
 const Board = () => {
 
@@ -15,8 +19,28 @@ const Board = () => {
     const [boardState, setBoardState] = useState(initialState);
     const updateBoardState = (state: string[][]) => setBoardState(state);
 
+    const [legalMoves, setLegalMoves] = useState(
+        [
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ]
+    );
+
     // Has a piece been selected
-    const [pieceSelected, setPieceSelected] = useState(false);
+    const [pieceSelected, setPieceSelected] = useState({
+        'piece': '',
+        'rowIndex': -1,
+        'columnIndex': -1,
+    });
 
     // Board dimensions
     const [
@@ -53,6 +77,12 @@ const Board = () => {
         return () => window.removeEventListener('resize', updateBoardDimensions);
     }, []);
 
+    useEffect(() => {
+        if(pieceSelected.piece){
+            setLegalMoves(determineLegalMoves(pieceSelected, boardState, restrictedSquares));
+        }
+    }, [pieceSelected, boardState]);
+
     //// ---------------------------------------------------------------------------------------------------------------
 
     return (
@@ -72,6 +102,7 @@ const Board = () => {
                                     columnIndex={columnIndex}
                                     piece={piece}
                                     pieceSelected={pieceSelected}
+                                    legalMove={legalMoves[rowIndex][columnIndex]}
                                     boardDimensions={boardDimensions}
                                     updateBoardState={updateBoardState}
                                     setPieceSelected={setPieceSelected}
@@ -86,5 +117,117 @@ const Board = () => {
         </div>
     )
 }
+
+const determineLegalMoves = (
+    pieceSelected: PieceSelected,
+    boardState: string[][],
+    restrictedSquares: string[][]
+) => {
+    const {piece, rowIndex, columnIndex} = pieceSelected;
+
+    console.log('determineLegalMoves firing!');
+    console.log('piece: ', piece);
+    console.log('rowIndex: ', rowIndex);
+    console.log('columnIndex: ', columnIndex);
+
+    // First create blank state that we can update
+    const legalMoves = [
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+    ];
+
+    // First check selected piece's current row downwards
+    let rowPos = columnIndex;
+    console.log('checking row pos downwards!');
+    console.log('rowPos: ', rowPos);
+    while(rowPos >= 0){
+        if(rowPos !== columnIndex){
+            const positionPiece = boardState[rowIndex][rowPos];
+            if (positionPiece === 'E') {
+                if (piece !== 'K') {
+                    legalMoves[rowIndex][rowPos] = restrictedSquares[rowIndex][rowPos] !== 'R' ? 'Y' : 'N';
+                } else {
+                    legalMoves[rowIndex][rowPos] = 'Y';
+                }
+            } else {
+                rowPos = -1;
+            }
+        }
+        rowPos--;
+    }
+
+    // Next check selected piece's current row upwards
+    rowPos = columnIndex;
+    console.log('checking row pos upwards!');
+    console.log('rowPos: ', rowPos);
+    while(rowPos <= 10){
+        if(rowPos !== columnIndex) {
+            const positionPiece = boardState[rowIndex][rowPos];
+            if (positionPiece === 'E') {
+                if (piece !== 'K') {
+                    legalMoves[rowIndex][rowPos] = restrictedSquares[rowIndex][rowPos] !== 'R' ? 'Y' : 'N';
+                } else {
+                    legalMoves[rowIndex][rowPos] = 'Y';
+                }
+            } else {
+                rowPos = 11;
+            }
+        }
+        rowPos++;
+    }
+
+    // Next check selected piece's current column downwards
+    let colPos = rowIndex;
+    console.log('checking col pos downwards!');
+    console.log('colPos: ', colPos);
+    while(colPos >= 0){
+        console.log('colPos: ', colPos);
+        if (colPos !== rowIndex) {
+            const positionPiece = boardState[colPos][columnIndex];
+            if (positionPiece === 'E') {
+                if (piece !== 'K') {
+                    legalMoves[colPos][columnIndex] = restrictedSquares[colPos][columnIndex] !== 'R' ? 'Y' : 'N';
+                } else {
+                    legalMoves[colPos][columnIndex] = 'Y';
+                }
+            } else {
+                colPos = -1;
+            }
+        }
+        colPos--;
+    }
+
+    // Next check selected piece's current column downwards
+    colPos = rowIndex;
+    console.log('checking col pos upwards!');
+    console.log('colPos: ', colPos);
+    while(colPos <= 10){
+        if (colPos !== rowIndex) {
+            const positionPiece = boardState[colPos][columnIndex];
+            if (positionPiece === 'E') {
+                if (piece !== 'K') {
+                    legalMoves[colPos][columnIndex] = restrictedSquares[colPos][columnIndex] !== 'R' ? 'Y' : 'N';
+                } else {
+                    legalMoves[colPos][columnIndex] = 'Y';
+                }
+            } else {
+                colPos = 11;
+            }
+        }
+        colPos++;
+    }
+
+    return legalMoves;
+}
+
 
 export default Board;

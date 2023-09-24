@@ -28,4 +28,8 @@
     &--selectable {
         border-color: aqua;
     }
+
+    &--illegal-move {
+        background: rgba(black, 0.6);
+    }
 }

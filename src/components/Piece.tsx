@@ -7,9 +7,12 @@ import {useState, useEffect, useRef, MouseEventHandler} from "react";
 import ClonedPiece from "./ClonedPiece.tsx";
 
 // Types
+import {PieceSelected} from "../types/PieceSelected.ts";
+
+// Interfaces
 interface PieceProps {
     piece: string;
-    pieceSelected: boolean;
+    pieceSelected: PieceSelected;
     rowIndex: number;
     columnIndex: number;
     boardDimensions: {
@@ -19,7 +22,7 @@ interface PieceProps {
         height: number
     };
     updateBoardState: (state: string[][]) => void;
-    setPieceSelected: (state: boolean) => void;
+    setPieceSelected: (state: PieceSelected) => void;
 }
 
 
@@ -41,7 +44,7 @@ const Piece = ({
         case 'B': pieceClasses = 'piece piece--black'; break;
         case 'K': pieceClasses = 'piece piece--king';
     }
-    pieceClasses = pieceSelected ? pieceClasses : pieceClasses += ' piece--selectable';
+    pieceClasses = pieceSelected.piece ? pieceClasses : pieceClasses += ' piece--selectable';
 
     //// ---------------------------------------------------------------------------------------------------------------
 
@@ -95,7 +98,11 @@ const Piece = ({
     // Onclick handler for when a piece is selected
     const selectPiece: MouseEventHandler<HTMLDivElement> = (event) => {
         const { clientX, clientY } = event;
-        setPieceSelected(true);
+        setPieceSelected({
+            'piece': piece,
+            'rowIndex': rowIndex,
+            'columnIndex': columnIndex
+        });
         setThisPieceSelected(true);
         setMousePosition({ x: clientX, y: clientY });
     };
