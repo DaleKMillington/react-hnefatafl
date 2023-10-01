@@ -1,5 +1,5 @@
 // Base Imports
-import {MouseEventHandler, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 
 // Third Party Imports
@@ -66,34 +66,6 @@ const ClonedPiece = ({
         break;
         case 'K': pieceClasses = 'cloned-piece cloned-piece--king';
     }
-
-    //// ---------------------------------------------------------------------------------------------------------------
-
-    //// Callbacks -----------------------------------------------------------------------------------------------------
-
-    // Provisional left click handler to determine a square being selected.
-    const handleLeftClick: MouseEventHandler<HTMLDivElement> = (event) => {
-        console.log('Selected piece row index: ', rowIndex);
-        console.log('Selected piece column index: ', columnIndex);
-        if (activeSquare) {
-            console.log('Target square row index: ', activeSquare.getAttribute('data-row'));
-            console.log('Target square column index: ', activeSquare.getAttribute('data-column'));
-        }
-    }
-
-    // Onclick handler for when a piece is selected.
-    const handleOtherClicks: MouseEventHandler<HTMLDivElement> = (event) => {
-        if (event.button === 2) {
-            event.preventDefault();
-            setPieceSelected({
-                'piece': '',
-                'rowIndex': -1,
-                'columnIndex': -1
-            });
-            setThisPieceSelected(false);
-            squares.forEach(square => square.classList.remove('board-square--selectable'));
-        }
-    };
 
     //// ---------------------------------------------------------------------------------------------------------------
 
@@ -172,11 +144,12 @@ const ClonedPiece = ({
                     mouseX > left &&
                     mouseX < (left + width) &&
                     mouseY > top &&
-                    mouseY < (top + height) &&
-                    square.getAttribute('data-legal-move') === 'Y'
+                    mouseY < (top + height)
                 ){
-                    square.classList.add('board-square--selectable');
-                    setActiveSquare(square);
+                    switch(square.getAttribute('data-legal-move')){
+                        case 'Y': setActiveSquare(square); square.classList.add('board-square--selectable'); break;
+                        case 'N': setActiveSquare(undefined);
+                    }
                 } else {
                     square.classList.remove('board-square--selectable');
                 }
@@ -186,14 +159,42 @@ const ClonedPiece = ({
         return () => window.removeEventListener('mousemove', handleMouseMoveSquares);
     }, [squares, setActiveSquare]);
 
+    // Set up a right click handler on the window to cancel the move.
+    useEffect(() => {
+        const cancelMove: EventListener = (event) => {
+            event.preventDefault();
+            setPieceSelected({
+                'piece': '',
+                'rowIndex': -1,
+                'columnIndex': -1
+            });
+            setThisPieceSelected(false);
+            squares.forEach(square => square.classList.remove('board-square--selectable'));
+        }
+        window.addEventListener('contextmenu', cancelMove);
+        return () => window.removeEventListener('contextmenu', cancelMove);
+    },[squares, setPieceSelected, setThisPieceSelected]);
+
+    // Set up left click to handle piece being moved (if legal).
+    useEffect(() => {
+        const handleLeftClick: EventListener = () => {
+            if (activeSquare) {
+                console.log('Selected piece row index: ', rowIndex);
+                console.log('Selected piece column index: ', columnIndex);
+                console.log('Target square row index: ', activeSquare.getAttribute('data-row'));
+                console.log('Target square column index: ', activeSquare.getAttribute('data-column'));
+            }
+        }
+        window.addEventListener('click', handleLeftClick);
+        return () => window.removeEventListener('click', handleLeftClick);
+    }, [activeSquare, rowIndex, columnIndex]);
+
     //// ---------------------------------------------------------------------------------------------------------------
 
     // Use React Portal to render the component at the <body> level so not affected by parent styling.
     return ReactDOM.createPortal(
         <div
             className={pieceClasses}
-            onClick={handleLeftClick}
-            onContextMenu={handleOtherClicks}
             style={{
                 top: `${clonePosition.top}px`,
                 left: `${clonePosition.left}px`,

@@ -125,11 +125,6 @@ const determineLegalMoves = (
 ) => {
     const {piece, rowIndex, columnIndex} = pieceSelected;
 
-    console.log('determineLegalMoves firing!');
-    console.log('piece: ', piece);
-    console.log('rowIndex: ', rowIndex);
-    console.log('columnIndex: ', columnIndex);
-
     // First create blank state that we can update
     const legalMoves = [
         ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
@@ -147,8 +142,6 @@ const determineLegalMoves = (
 
     // First check selected piece's current row downwards
     let rowPos = columnIndex;
-    console.log('checking row pos downwards!');
-    console.log('rowPos: ', rowPos);
     while(rowPos >= 0){
         if(rowPos !== columnIndex){
             const positionPiece = boardState[rowIndex][rowPos];
@@ -167,8 +160,6 @@ const determineLegalMoves = (
 
     // Next check selected piece's current row upwards
     rowPos = columnIndex;
-    console.log('checking row pos upwards!');
-    console.log('rowPos: ', rowPos);
     while(rowPos <= 10){
         if(rowPos !== columnIndex) {
             const positionPiece = boardState[rowIndex][rowPos];
@@ -187,10 +178,7 @@ const determineLegalMoves = (
 
     // Next check selected piece's current column downwards
     let colPos = rowIndex;
-    console.log('checking col pos downwards!');
-    console.log('colPos: ', colPos);
     while(colPos >= 0){
-        console.log('colPos: ', colPos);
         if (colPos !== rowIndex) {
             const positionPiece = boardState[colPos][columnIndex];
             if (positionPiece === 'E') {
@@ -208,8 +196,6 @@ const determineLegalMoves = (
 
     // Next check selected piece's current column downwards
     colPos = rowIndex;
-    console.log('checking col pos upwards!');
-    console.log('colPos: ', colPos);
     while(colPos <= 10){
         if (colPos !== rowIndex) {
             const positionPiece = boardState[colPos][columnIndex];
