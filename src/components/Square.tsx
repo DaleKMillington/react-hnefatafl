@@ -45,11 +45,16 @@ const Square = ({
     squareClasses = columnIndex === 0 ? squareClasses += ' board-square--left' : squareClasses;
     squareClasses = columnIndex === 10 ? squareClasses += ' board-square--right' : squareClasses;
 
-    squareClasses = pieceSelected.piece && legalMove === 'N' ? squareClasses += ' board-square--illegal-move' :
-        squareClasses;
-
     squareClasses = restrictedSquares[rowIndex][columnIndex] === 'R' ? squareClasses += ' board-square--restricted' :
         squareClasses;
+
+    if (legalMove === 'N' && pieceSelected.piece){
+        squareClasses = restrictedSquares[rowIndex][columnIndex] === 'R' ? squareClasses +=  ' board-square--illegal-move':
+           squareClasses += ' board-square--illegal-move';
+    }
+
+
+
 
     //// ---------------------------------------------------------------------------------------------------------------
 
