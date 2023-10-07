@@ -6,7 +6,17 @@ import { useState, useEffect } from "react";
 // Application Imports
 import Board from './Board.tsx';
 
-const BoardContainer = () => {
+// Types
+import {GameState, SetGameState} from "../App.tsx";
+
+// Interfaces
+export interface BoardContainerProps {
+    gameState: GameState;
+    setGameState: SetGameState;
+}
+
+
+const BoardContainer = ({gameState, setGameState}: BoardContainerProps) => {
 
     //// useState Hooks ------------------------------------------------------------------------------------------------
 
@@ -74,7 +84,10 @@ const BoardContainer = () => {
                 <span>ᚾ</span>
                 <span>ᛟ</span>
             </div>
-            <Board />
+            <Board
+                gameState={gameState}
+                setGameState={setGameState}
+            />
         </div>
     )
 }

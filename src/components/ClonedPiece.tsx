@@ -8,14 +8,16 @@ import ReactDOM from 'react-dom';
 
 // Types
 import {PieceSelected} from "../types/PieceSelected.ts";
+import {GameState, SetGameState} from "../App.tsx";
 
 // Interfaces
-interface ClonePieceProps {
+import {BoardContainerProps} from "./BoardContainer.tsx";
+
+// Interfaces
+interface ClonePieceProps extends BoardContainerProps {
     piece: string;
     rowIndex: number;
     columnIndex: number;
-    width: number;
-    height: number;
     left: number;
     top: number;
     boardDimensions: {
@@ -32,16 +34,22 @@ const ClonedPiece = ({
     piece,
     rowIndex,
     columnIndex,
-    width,
-    height,
     left,
     top,
     boardDimensions,
+    gameState,
+    setGameState,
     setPieceSelected,
     setThisPieceSelected
 }: ClonePieceProps) => {
 
     //// Declarations --------------------------------------------------------------------------------------------------
+
+    // Get the height of any piece so that we can make the clone the same dimensions.
+    const {
+        width: pieceWidth,
+        height: pieceHeight
+    } = document.querySelectorAll('.piece')[0].getBoundingClientRect();
 
     // Board dimensions so we know if clone has left the board and hence deselect.
     const {
@@ -89,10 +97,10 @@ const ClonedPiece = ({
             const mouseX = event.clientX;
             const mouseY = event.clientY;
             if(
-                (mouseX + width / 2) < boardLeft ||
-                (mouseX - width / 2) > boardLeft + boardWidth ||
-                (mouseY + height / 2) < boardTop ||
-                (mouseY - height / 2) > boardTop + boardHeight
+                (mouseX + pieceWidth / 2) < boardLeft ||
+                (mouseX - pieceWidth / 2) > boardLeft + boardWidth ||
+                (mouseY + pieceHeight / 2) < boardTop ||
+                (mouseY - pieceHeight / 2) > boardTop + boardHeight
             ){
                 setThisPieceSelected(false);
                 setPieceSelected({
@@ -126,8 +134,8 @@ const ClonedPiece = ({
         boardWidth,
         boardTop,
         boardHeight,
-        width,
-        height,
+        pieceWidth,
+        pieceHeight,
         setThisPieceSelected,
         setPieceSelected,
         squares
@@ -179,15 +187,30 @@ const ClonedPiece = ({
     useEffect(() => {
         const handleLeftClick: EventListener = () => {
             if (activeSquare) {
-                console.log('Selected piece row index: ', rowIndex);
-                console.log('Selected piece column index: ', columnIndex);
-                console.log('Target square row index: ', activeSquare.getAttribute('data-row'));
-                console.log('Target square column index: ', activeSquare.getAttribute('data-column'));
+                const dataRowAttribute = activeSquare.getAttribute('data-row');
+                const targetRowIndex = dataRowAttribute ? parseInt(dataRowAttribute, 10) : 0;
+                const dataColumnAttribute = activeSquare.getAttribute('data-column');
+                const targetColumnIndex = dataColumnAttribute ? parseInt(dataColumnAttribute, 10) : 0;
+                handleMove({
+                    'selectedRowIndex': rowIndex,
+                    'selectedColumnIndex': columnIndex,
+                    'targetRowIndex': targetRowIndex,
+                    'targetColumnIndex': targetColumnIndex,
+                    'gameState': gameState,
+                    'setGameState': setGameState
+                });
+                setPieceSelected({
+                    'piece': '',
+                    'rowIndex': -1,
+                    'columnIndex': -1
+                });
+                setThisPieceSelected(false);
+                activeSquare.classList.remove('board-square--selectable');
             }
         }
         window.addEventListener('click', handleLeftClick);
         return () => window.removeEventListener('click', handleLeftClick);
-    }, [activeSquare, rowIndex, columnIndex]);
+    }, [activeSquare, rowIndex, columnIndex, gameState, setGameState, setPieceSelected, setThisPieceSelected]);
 
     //// ---------------------------------------------------------------------------------------------------------------
 
@@ -198,12 +221,43 @@ const ClonedPiece = ({
             style={{
                 top: `${clonePosition.top}px`,
                 left: `${clonePosition.left}px`,
-                width: `${width}px`,
-                height: `${height}px`
+                width: `${pieceWidth}px`,
+                height: `${pieceHeight}px`
             }}
         ></div>,
         document.body
     );
 };
+
+type HandleMoveParams = {
+    'selectedRowIndex': number,
+    'selectedColumnIndex': number,
+    'targetRowIndex': number,
+    'targetColumnIndex': number,
+    'gameState': GameState,
+    'setGameState': SetGameState
+}
+
+const handleMove = ({
+    selectedRowIndex,
+    selectedColumnIndex,
+    targetRowIndex,
+    targetColumnIndex,
+    gameState,
+    setGameState
+}: HandleMoveParams) => {
+    const {boardState, restrictedSquares, turn, player} = gameState;
+    const newBoardState = JSON.parse(JSON.stringify(boardState));
+    newBoardState[targetRowIndex][targetColumnIndex] = newBoardState[selectedRowIndex][selectedColumnIndex];
+    newBoardState[selectedRowIndex][selectedColumnIndex] = 'E';
+    setGameState({
+        'boardState': newBoardState,
+        'restrictedSquares': restrictedSquares,
+        'turn': turn + 1,
+        'player': player === 'W' ? 'B' : 'W'
+    })
+}
+
+
 
 export default ClonedPiece;

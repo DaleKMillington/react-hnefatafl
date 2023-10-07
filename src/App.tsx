@@ -1,13 +1,35 @@
 // Base Imports
+import {useState} from "react";
 
 // Third Party Imports
 
 // Application Imports
 import './sass/index.scss';
+import {initialState, restrictedSquares} from "./game-logic/board-state.ts";
 import BoardContainer from './components/BoardContainer.tsx';
 
+// Types
+export type GameState = {
+    'boardState': string[][];
+    'restrictedSquares': string[][];
+    'turn': number;
+    'player': string;
+}
+export type SetGameState = (gameState: GameState) => void;
 
 const App = () => {
+
+    //// useState Hooks ------------------------------------------------------------------------------------------------
+
+    // Board piece position
+    const [gameState, setGameState] = useState({
+        'boardState': initialState,
+        'restrictedSquares': restrictedSquares,
+        'turn': 1,
+        'player': 'W'
+    });
+
+    //// ---------------------------------------------------------------------------------------------------------------
 
     return (
         <>
@@ -22,7 +44,8 @@ const App = () => {
                     <div>RULES</div>
                     <div>UNDO</div>
                     <div>RESTART</div>
-                    <div>TURN 19</div>
+                    <div>PLAYER {gameState.player}</div>
+                    <div>TURN {gameState.turn}</div>
                 </div>
 
                 <div className="main-row">
@@ -30,7 +53,10 @@ const App = () => {
                         <div className="main-icon__icon main-icon__icon--left">ᛟ</div>
                     </div>
 
-                    <BoardContainer />
+                    <BoardContainer
+                        gameState={gameState}
+                        setGameState={setGameState}
+                    />
 
                     <div className="main-icon">
                         <div className="main-icon__icon main-icon__icon--right">ᚾ</div>

@@ -4,36 +4,24 @@ import {useEffect, useRef, useState} from "react";
 // Third Party Imports
 
 // Application Imports
-import {initialState} from '../game-logic/board-state.ts';
-import {restrictedSquares} from "../game-logic/board-state.ts";
 import Square from './Square.tsx';
 
 // Types
 import {PieceSelected} from "../types/PieceSelected.ts";
+import {GameState} from "../App.tsx";
 
-const Board = () => {
+// Interfaces
+import {BoardContainerProps} from "./BoardContainer.tsx";
+
+
+const Board = ({gameState, setGameState}: BoardContainerProps) => {
+
+    const pieceCanMove = determinePieceCanMove(gameState);
 
     //// useState Hooks ------------------------------------------------------------------------------------------------
 
-    // Board piece position
-    const [boardState, setBoardState] = useState(initialState);
-    const updateBoardState = (state: string[][]) => setBoardState(state);
-
-    const [legalMoves, setLegalMoves] = useState(
-        [
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-            ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ]
-    );
+    // Initialise state for legal moves to be passed down to squares.
+    const [legalMoves, setLegalMoves] = useState(initLegalMoves());
 
     // Has a piece been selected
     const [pieceSelected, setPieceSelected] = useState({
@@ -79,9 +67,9 @@ const Board = () => {
 
     useEffect(() => {
         if(pieceSelected.piece){
-            setLegalMoves(determineLegalMoves(pieceSelected, boardState, restrictedSquares));
+            setLegalMoves(determineLegalMoves(pieceSelected, gameState));
         }
-    }, [pieceSelected, boardState]);
+    }, [pieceSelected, gameState]);
 
     //// ---------------------------------------------------------------------------------------------------------------
 
@@ -91,7 +79,7 @@ const Board = () => {
             <div className="board__background-image"></div>
 
                 {
-                    boardState.map((row, rowIndex) => (
+                    gameState.boardState.map((row, rowIndex) => (
                         <div key={rowIndex} className="board-row">
 
                         {
@@ -104,7 +92,9 @@ const Board = () => {
                                     pieceSelected={pieceSelected}
                                     legalMove={legalMoves[rowIndex][columnIndex]}
                                     boardDimensions={boardDimensions}
-                                    updateBoardState={updateBoardState}
+                                    gameState={gameState}
+                                    setGameState={setGameState}
+                                    pieceCanMove={pieceCanMove}
                                     setPieceSelected={setPieceSelected}
                                 />
                             ))
@@ -118,102 +108,97 @@ const Board = () => {
     )
 }
 
-const determineLegalMoves = (
-    pieceSelected: PieceSelected,
-    boardState: string[][],
-    restrictedSquares: string[][]
-) => {
-    const {piece, rowIndex, columnIndex} = pieceSelected;
+const initLegalMoves = () => {
+    return Array.from({ length: 11 }, () =>
+        Array.from({ length: 11 }, () => 'N')
+    );
+}
 
-    // First create blank state that we can update
-    const legalMoves = [
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-        ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-    ];
+const determineLegalMoves = (pieceSelected: PieceSelected, gameState: GameState) => {
+    const { piece, rowIndex, columnIndex } = pieceSelected;
+    const { boardState, restrictedSquares } = gameState;
 
-    // First check selected piece's current row downwards
-    let rowPos = columnIndex;
-    while(rowPos >= 0){
-        if(rowPos !== columnIndex){
-            const positionPiece = boardState[rowIndex][rowPos];
-            if (positionPiece === 'E') {
-                if (piece !== 'K') {
-                    legalMoves[rowIndex][rowPos] = restrictedSquares[rowIndex][rowPos] !== 'R' ? 'Y' : 'N';
-                } else {
-                    legalMoves[rowIndex][rowPos] = 'Y';
+    // Create a 2D array filled with 'N'
+    const legalMoves = initLegalMoves();
+
+    // Helper function to update legalMoves based on conditions
+    const updateLegalMove = (rowIndex: number, columnIndex: number) => {
+        const isEmpty = boardState[rowIndex][columnIndex] === 'E';
+        const isKing = piece === 'K';
+        const isRestricted = restrictedSquares[rowIndex][columnIndex] === 'Y';
+        if (isEmpty){
+            if (isRestricted){
+                if (isKing) {
+                    legalMoves[rowIndex][columnIndex] = 'Y';
                 }
             } else {
-                rowPos = -1;
+                legalMoves[rowIndex][columnIndex] = 'Y';
             }
         }
-        rowPos--;
+    };
+
+    // Check selected piece's current row (left and right)
+    for (let rowPos = columnIndex - 1; rowPos >= 0; rowPos--) {
+        if (boardState[rowIndex][rowPos] !== 'E') break;
+        updateLegalMove(rowIndex, rowPos);
+    }
+    for (let rowPos = columnIndex + 1; rowPos < 11; rowPos++) {
+        if (boardState[rowIndex][rowPos] !== 'E') break;
+        updateLegalMove(rowIndex, rowPos);
     }
 
-    // Next check selected piece's current row upwards
-    rowPos = columnIndex;
-    while(rowPos <= 10){
-        if(rowPos !== columnIndex) {
-            const positionPiece = boardState[rowIndex][rowPos];
-            if (positionPiece === 'E') {
-                if (piece !== 'K') {
-                    legalMoves[rowIndex][rowPos] = restrictedSquares[rowIndex][rowPos] !== 'R' ? 'Y' : 'N';
-                } else {
-                    legalMoves[rowIndex][rowPos] = 'Y';
-                }
-            } else {
-                rowPos = 11;
-            }
-        }
-        rowPos++;
+    // Check selected piece's current column (up and down)
+    for (let colPos = rowIndex - 1; colPos >= 0; colPos--) {
+        if (boardState[colPos][columnIndex] !== 'E') break;
+        updateLegalMove(colPos, columnIndex);
     }
-
-    // Next check selected piece's current column downwards
-    let colPos = rowIndex;
-    while(colPos >= 0){
-        if (colPos !== rowIndex) {
-            const positionPiece = boardState[colPos][columnIndex];
-            if (positionPiece === 'E') {
-                if (piece !== 'K') {
-                    legalMoves[colPos][columnIndex] = restrictedSquares[colPos][columnIndex] !== 'R' ? 'Y' : 'N';
-                } else {
-                    legalMoves[colPos][columnIndex] = 'Y';
-                }
-            } else {
-                colPos = -1;
-            }
-        }
-        colPos--;
-    }
-
-    // Next check selected piece's current column downwards
-    colPos = rowIndex;
-    while(colPos <= 10){
-        if (colPos !== rowIndex) {
-            const positionPiece = boardState[colPos][columnIndex];
-            if (positionPiece === 'E') {
-                if (piece !== 'K') {
-                    legalMoves[colPos][columnIndex] = restrictedSquares[colPos][columnIndex] !== 'R' ? 'Y' : 'N';
-                } else {
-                    legalMoves[colPos][columnIndex] = 'Y';
-                }
-            } else {
-                colPos = 11;
-            }
-        }
-        colPos++;
+    for (let colPos = rowIndex + 1; colPos < 11; colPos++) {
+        if (boardState[colPos][columnIndex] !== 'E') break;
+        updateLegalMove(colPos, columnIndex);
     }
 
     return legalMoves;
-}
+};
+
+const determinePieceCanMove = (gameState: GameState) => {
+    const {boardState, restrictedSquares, player} = gameState;
+    const checkPieces = player === 'W' ? ['W', 'K'] : ['B'];
+    const legalMoves = initLegalMoves();
+
+    const isKing = (row: number, column: number) => boardState[row][column] === 'K';
+    const isEmpty = (row: number, column: number) => boardState[row][column] === 'E';
+    const isRestricted = (row: number, column: number) => restrictedSquares[row][column] === 'Y';
+
+    const canMove = (row: number, column: number, rowOffset: number, colOffset: number) => {
+        const newRow = row + rowOffset;
+        const newColumn = column + colOffset;
+        if (newRow >= 0 && newRow <= 10 && newColumn >= 0 && newColumn <= 10) {
+            if (isEmpty(newRow, newColumn)) {
+                if (isKing(row, column) && isRestricted(newRow, newColumn)) {
+                    legalMoves[newRow][newColumn] = 'Y';
+                    return;
+                }
+                if (!isRestricted(newRow, newColumn)){
+                    legalMoves[row][column] = 'Y';
+                }
+            }
+        }
+    };
+
+    for (let row = 0; row < 11; row++) {
+        for (let column = 0; column < 11; column++) {
+            const boardStatePiece = boardState[row][column];
+            if (checkPieces.includes(boardStatePiece)) {
+                canMove(row, column, -1, 0);
+                canMove(row, column, 1, 0);
+                canMove(row, column, 0, -1);
+                canMove(row, column, 0, 1);
+            }
+        }
+    }
+
+    return legalMoves;
+};
 
 
 export default Board;

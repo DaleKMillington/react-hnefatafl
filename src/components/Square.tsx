@@ -10,7 +10,8 @@ import {restrictedSquares} from "../game-logic/board-state.ts";
 import {PieceSelected} from "../types/PieceSelected.ts";
 
 // Interfaces
-interface SquareProps {
+import {BoardContainerProps} from "./BoardContainer.tsx";
+interface SquareProps extends BoardContainerProps {
     rowIndex: number;
     columnIndex: number;
     piece: string;
@@ -22,7 +23,7 @@ interface SquareProps {
         width: number,
         height: number
     };
-    updateBoardState: (state: string[][]) => void;
+    pieceCanMove: string[][];
     setPieceSelected: (state: PieceSelected) => void;
 }
 
@@ -33,7 +34,9 @@ const Square = ({
     pieceSelected,
     legalMove,
     boardDimensions,
-    updateBoardState,
+    gameState,
+    setGameState,
+    pieceCanMove,
     setPieceSelected
 }: SquareProps) => {
 
@@ -44,7 +47,7 @@ const Square = ({
     squareClasses = rowIndex === 10 ? squareClasses += ' board-square--bottom' : squareClasses;
     squareClasses = columnIndex === 0 ? squareClasses += ' board-square--left' : squareClasses;
     squareClasses = columnIndex === 10 ? squareClasses += ' board-square--right' : squareClasses;
-    squareClasses = restrictedSquares[rowIndex][columnIndex] === 'R' ? squareClasses += ' board-square--restricted' :
+    squareClasses = restrictedSquares[rowIndex][columnIndex] === 'Y' ? squareClasses += ' board-square--restricted' :
         squareClasses;
     squareClasses = pieceSelected.piece && legalMove === 'N' ? squareClasses += ' board-square--illegal-move' :
         squareClasses;
@@ -59,7 +62,9 @@ const Square = ({
                 rowIndex={rowIndex}
                 columnIndex={columnIndex}
                 boardDimensions={boardDimensions}
-                updateBoardState={updateBoardState}
+                gameState={gameState}
+                setGameState={setGameState}
+                pieceCanMove={pieceCanMove}
                 setPieceSelected={setPieceSelected}
             />
         </div>

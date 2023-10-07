@@ -21,15 +21,15 @@ export const initialState: string[][] = [
 // R - Restricted
 
 export const restrictedSquares: string[][] = [
-    ['R', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'R'],
+    ['Y', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-    ['N', 'N', 'N', 'N', 'N', 'R', 'N', 'N', 'N', 'N', 'N'],
+    ['N', 'N', 'N', 'N', 'N', 'Y', 'N', 'N', 'N', 'N', 'N'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
     ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-    ['R', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'R']
+    ['Y', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y']
 ]

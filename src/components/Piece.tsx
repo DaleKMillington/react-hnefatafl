@@ -1,5 +1,5 @@
 // Base Imports
-import {useState, useEffect, useRef, MouseEventHandler} from "react";
+import {useState, useRef, MouseEventHandler} from "react";
 
 // Third Party Imports
 
@@ -10,7 +10,8 @@ import ClonedPiece from "./ClonedPiece.tsx";
 import {PieceSelected} from "../types/PieceSelected.ts";
 
 // Interfaces
-interface PieceProps {
+import {BoardContainerProps} from "./BoardContainer.tsx";
+interface PieceProps extends BoardContainerProps {
     piece: string;
     pieceSelected: PieceSelected;
     rowIndex: number;
@@ -21,7 +22,7 @@ interface PieceProps {
         width: number,
         height: number
     };
-    updateBoardState: (state: string[][]) => void;
+    pieceCanMove: string[][];
     setPieceSelected: (state: PieceSelected) => void;
 }
 
@@ -32,7 +33,9 @@ const Piece = ({
     rowIndex,
     columnIndex,
     boardDimensions,
-    updateBoardState,
+    gameState,
+    setGameState,
+    pieceCanMove,
     setPieceSelected
 }: PieceProps) => {
 
@@ -44,7 +47,9 @@ const Piece = ({
         case 'B': pieceClasses = 'piece piece--black'; break;
         case 'K': pieceClasses = 'piece piece--king';
     }
-    pieceClasses = pieceSelected.piece ? pieceClasses : pieceClasses += ' piece--selectable';
+    pieceClasses = pieceSelected.piece ? pieceClasses :
+        pieceCanMove[rowIndex][columnIndex] === 'N' ? pieceClasses :
+        pieceClasses += ' piece--selectable';
 
     //// ---------------------------------------------------------------------------------------------------------------
 
@@ -62,10 +67,6 @@ const Piece = ({
         setMousePosition
     ] = useState({ x: 0, y: 0 });
 
-    // Width and height of the piece that was selected so that we can make clone the same size.
-    const [pieceWidth, setPieceWidth] = useState(0);
-    const [pieceHeight, setPieceHeight] = useState(0);
-
     //// ---------------------------------------------------------------------------------------------------------------
 
     //// useRef Hooks --------------------------------------------------------------------------------------------------
@@ -75,36 +76,22 @@ const Piece = ({
 
     //// ---------------------------------------------------------------------------------------------------------------
 
-    //// useEffect Hooks -----------------------------------------------------------------------------------------------
-
-    // On component reload, calculate the size of the previous renders selected piece.
-    useEffect(() => {
-        const updatePieceSize = () => {
-            if (pieceRef.current) {
-                const { width, height } = pieceRef.current.getBoundingClientRect();
-                setPieceWidth(width);
-                setPieceHeight(height);
-            }
-        };
-        updatePieceSize();
-        window.addEventListener('resize', updatePieceSize);
-        return () => window.removeEventListener('resize', updatePieceSize);
-    }, []);
-
-    //// ---------------------------------------------------------------------------------------------------------------
-
     //// Callbacks -----------------------------------------------------------------------------------------------------
 
     // Onclick handler for when a piece is selected
     const selectPiece: MouseEventHandler<HTMLDivElement> = (event) => {
-        const { clientX, clientY } = event;
-        setPieceSelected({
-            'piece': piece,
-            'rowIndex': rowIndex,
-            'columnIndex': columnIndex
-        });
-        setThisPieceSelected(true);
-        setMousePosition({ x: clientX, y: clientY });
+        const isWhitePieceAndPlayer = ['W', 'K'].includes(piece) && gameState.player === 'W';
+        const isBlackPieceAndPlayer = piece === 'B' && gameState.player === 'B';
+        if ((isWhitePieceAndPlayer || isBlackPieceAndPlayer) && pieceCanMove[rowIndex][columnIndex] === 'Y'){
+            const { clientX, clientY } = event;
+            setPieceSelected({
+                'piece': piece,
+                'rowIndex': rowIndex,
+                'columnIndex': columnIndex
+            });
+            setThisPieceSelected(true);
+            setMousePosition({ x: clientX, y: clientY });
+        }
     };
 
     //// ---------------------------------------------------------------------------------------------------------------
@@ -117,11 +104,11 @@ const Piece = ({
                     piece={piece}
                     rowIndex={rowIndex}
                     columnIndex={columnIndex}
-                    width={pieceWidth}
-                    height={pieceHeight}
                     left={mousePosition.x}
                     top={mousePosition.y}
                     boardDimensions={boardDimensions}
+                    gameState={gameState}
+                    setGameState={setGameState}
                     setPieceSelected={setPieceSelected}
                     setThisPieceSelected={setThisPieceSelected}
                 />
